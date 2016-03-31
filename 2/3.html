@@ -1,0 +1,237 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>父子格设置</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../resources/default.css" />
+		<script type="text/javascript" src="../resources/default.js"></script>
+		<script type="text/javascript" src="../resources/jquery.js"></script>
+		<script type="text/javascript" src="../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="folder.html">报表设计</a> >> <a class="alink" href="3.html">父子格设置</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							父子格设置
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">描述</a></li><li><a href="#a:2.">父子格关系</a></li><li><a href="#a:3.">父子格分类</a></li><li><a href="#a:4.">父子格设置</a></li></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<a name="a:1."><div class=doc_h1>1. <span>描述</span></div></a><div class=doc_description><span>在</span><span><a href="../2/2.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">上一节</a></span><span>中介绍了单元格的扩展，单元格的扩展是针对具体的某一个单元格，当报表主体中绑定了多个单元格时，单元格与单元格之间是否存在联系，其扩展方向是否会相互影响呢？</span></div><div class=doc_description><span>如下图，在单元格中拖曳两个字段，在web端预览的时候，可以看到后面的单元格根据前面的单元格数据进行分组显示：</span></div><div class=doc_description><img src=3-1.png></img></div><div class=doc_description><span>表明当报表主体中绑定了多个单元格的时候，单元格间会天然存在某种关系，使单元格间存在数据过滤关系，并且跟随扩展，这就是父子格，前面的单元格称之为父格，后面的单元格称之为子格，也就是说子格的数据会根据父格的数据进行过滤分组显示，并且还会跟随父格的扩展方向而扩展，下面我们来详细介绍一下父子格。</span></div><a name="a:2."><div class=doc_h1>2. <span>父子格关系</span></div></a><div class=doc_description><span>子格的扩展属性会随着父格的扩展属性变化，当单元格左侧或上方相邻的单元格具有扩展属性时，单元格默认其左侧相邻单元格为其左父格，默认上方相邻的单元格为其上父格。</span></div><div class=doc_description><span>父子格关系包括两种：过滤关系和跟随关系。</span></div><ul class=doc_bullets><li>过滤关系</li></ul><div class=doc_description><span>过滤关系是指子格会默认将父格的数据作为过滤条件进行过滤，使父子格之间的数据能对应的显示出来，但是这个默认的过滤关系只限于两个单元格中的字段来自于同一个数据集，如上图，两个单元格中数据来自于同一个数据集，故华东地区单元格后面跟随华东地区的销售员，华北地区跟随华北地区的销售员，而不同数据集中的两个字段，子格会将跟随父格将所有数据重复显示，如下图，B2单元格相邻的单元格为A2，在其左侧，故A2为B2的左父格：</span></div><div class=doc_description><img src=3-2.png></img></div><div class=doc_description><span class="doc_warning">注：过滤关系除了可以通过父子格默认添加之外，还可手动添加，后面章节再详述。</span></div><ul class=doc_bullets><li>跟随关系</li></ul><div class=doc_description><span>跟随关系就是指子格会默认跟随父格的扩展方向进行分组，即父格纵向扩展，子格跟随父格默认纵向扩展，如上图，地区单元格A2纵向扩展，子格B2也纵向跟随扩展，父格横向扩展，子格会跟随父格横向扩展分组，同时保持自己的数据使用默认的纵向扩展，如下图，A3相邻单元格为A2，且在其上方，故A2是A3的上父格：</span></div><div class=doc_description><img src=3-3.png></img></div><div class=doc_description><span class="doc_warning">注：单元格中数据如果是数据集中的字段，不是公式，那么其默认扩展方向均为纵向扩展，但是会根据父格的不同而进行不同方向的分组。</span></div><a name="a:3."><div class=doc_h1>3. <span>父子格分类</span></div></a><div class=doc_description><span>父子格包括左父格和上父格两种。</span></div><ul class=doc_bullets><li>左父格</li></ul><div class=doc_description><span>左父格是指跟随父格单元格纵向扩展，即表示其父格是纵向扩展，一般来说，左父格均在单元格的左侧，单元格将其相邻的左侧纵向单元格默认为左父格，并且当鼠标选中子单元格时，左父格会显示一个蓝色向下的箭头，如下图：</span></div><div class=doc_description><img src=3-4.png></img></div><ul class=doc_bullets><li>上父格</li></ul><div class=doc_description><span>上父格是指跟随父格单元格横向扩展，即表示其父格是横向扩展，一般来说，上父格均在单元格的上方，单元格将其相邻的上方横向扩展单元格默认为上父格，并且当鼠标选中子单元格时，上父格会显示一个蓝色向右的箭头，如下图：</span></div><div class=doc_description><img src=3-5.png></img></div><a name="a:4."><div class=doc_h1>4. <span>父子格设置</span></div></a><div class=doc_description><span>父格的设置有3种：不设置，默认设置和自定义设置，如下图所示：</span></div><div class=doc_description><img src=3-6.png></img></div><ul class=doc_bullets><li>自定义设置</li></ul><div class=doc_description><span>自定义设置就是指可以自己为指定单元格设置父格，可直接输入单元格或者快速选择，如下图所示：</span></div><div class=doc_description><img src=3-7.png></img></div><ul class=doc_bullets><li>默认设置</li></ul><div class=doc_description><span>默认就是指将数据列拖拽至单元格中时，该单元格会默认将其相邻上方横向扩展或者左侧纵向扩展的单元格当做上父格或者左父格。</span></div><div class=doc_description><span class="doc_warning">注：必须是相邻的同行或者同列单元格，不是相邻的需要自定义设置。</span></div><div class=doc_description><span class="doc_warning">另：其单元格的左侧相邻单元格不具有扩展属性时，会依次向左或向上寻找具有扩展属性的单元格，来确定它的父格。</span></div><ul class=doc_bullets><li>无</li></ul><div class=doc_description><span>无就是指该单元格没有父格，如下图：</span></div><div class=doc_description><img src=3-8.png></img></div><div class=doc_description><span>父子格设置章节在线视频地址请查看</span><span><a href="http://bbs.finereport.com/thread-67988-1-1.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">【单元格扩展和父子格】</a></span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
