@@ -1,0 +1,237 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>数据库查询</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../resources/default.css" />
+		<script type="text/javascript" src="../../resources/default.js"></script>
+		<script type="text/javascript" src="../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../folder.html">设计思路</a> >> <a class="alink" href="folder.html">数据集</a> >> <a class="alink" href="0.html">数据库查询</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							数据库查询
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">概述</a></li><li><a href="#a:2.">数据库查询</a></li><li><a href="#a:3.">视图查询</a></li><ul><li><a href="#a:3.1">数据库查询</a></li><li><a href="#a:3.2">使用视图查询</a></li></ul><li><a href="#a:4.">模糊查询</a></li></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<a name="a:1."><div class=doc_h1>1. <span>概述</span></div></a><div class=doc_description><span>SQL查询是指从定义好的数据库连接中，也就是数据源中使用SQL语句来选择我们所需要的数据字段，一般是直接对数据源中的数据库表直接进行操作。在设计器中我们把数据源分为两种，一种是服务器数据集，一种是报表数据集，两者被引用的范围不一样，下面我们以服务器数据集为例进行说明。</span></div><a name="a:2."><div class=doc_h1>2. <span>数据库查询</span></div></a><div class=doc_description><span>选择服务器下服务器数据集，点击服务器数据集窗口的左上角的</span><img src=0-1.png></img><span>按钮，选择数据库查询，然后给数据库查询命名，接着我们就可以添加SQL查询了。</span></div><div class=doc_description><img src=0-2.png></img></div><div class=doc_description><span>使用sql，选择好数据源后，我们就可以使用SQL对数据库表进行操作，选中查询编辑器，在其中输入SQL语句select * from Employees where EmployeeID = ${ID}。</span></div><div class=doc_description><span>这是一个带参数的SQL查询，"${"和"}"之间的ID即是参数，预览时输入参数ID=4的结果可以在预览组中看，实际就是执行了一个</span><span class="doc_sql">select * from Employees where EmployeeID=4</span><span>的SQL查询。</span></div><div class=doc_description><img src=0-3.png></img></div><div class=doc_description><span class="doc_warning">注：一般的SQL我们都通用，只是在设置参数时需要参照以上的形式。</span></div><div class=doc_description><span>下面介绍整个数据集界面的一些基本属性，在后面的章节中就不再加以介绍了。</span></div><div class=doc_description><table id="table" width="80%" bordercolor="black" cellspacing="0" border="1px"><tr><td>属性</td><td>类型</td><td>向导</td><td>查询编辑器</td><td>参数</td><td>最大预览数</td></tr><tr><td>描述</td><td>对于查询类型，FineReport既支持普通的SQL查询，也支持存储过程，并且这两种类型的查询语句中都可以包含参数。 注意: SQL查询和存储过程，通过JDBC，最终都是由数据库软件来解析执行，并将结果返回给FineReport来显示的，所以查询执行的速度和性能完全由对应的数据库软件来决定。</td><td>FineReport提供了简单的向导来帮助用户创建简单的SQL查询和存储过程。 注意:由于SQL语言比较复杂，FineReport提供的向导只能定义常用的简单SQL查询(不支持分组，子查询等等)；存储过程的向导基本可以满足要求，它能够列出所连接数据库中所有的存储过程，并根据所选择存储过程的名字，自动获得存储过程的参数来产生可以执行的存储过程语句。</td><td>当向导产生的查询不能完全满足要求的时候，可以通过我们提供的文本编辑器来编辑任意复杂的查询语句（利用向导产生的存储过程，一般不需要再次编辑）。</td><td>FineReport可以完美地支持参数查询，在定义查询语句的时候，你只需要用特殊字符串"${XXX}"(参数值为数值型，为${参数},否则为'${XXX}')，将参数名字前后包含起来，点击下面的刷新按钮，可以给参数赋默认值，这样当报表引擎执行这个SQL语句的时候，在C/S系统会弹出一个对话框来要求用户输入对应参数的数值，并且会自动显示默认值，在B/S系统会遍历客户端(通常是浏览器)传递过来的所有参数数值；然后FineReport利用这些参数的数值来替换查询中对应的字符串“${XXX}”，将替换过的查询语句提交给数据库解析和执行。 比如: 1.用户输入的查询语句为: “select * from Customers where ID = ${ID}”； 2.从客户端动态取到的ID数值为: 1； 3.根据参数值产生新的查询语句：“select * from Customers where ID = 1”，利用JDBC，将这个新产生的查询语句传递给相应的数据库解析和执行。</td><td>这里为了加快预览的速度，才设置了预览的最大行数（默认值是200），这个数值只有在点击（预览）按钮的时候才起作用，不会错误地作用到引用这个查询的报表模板文件中。</td></tr></table></div><div class=doc_description><span>使用报表数据集的操作方法和服务器数据集类似，只是打开报表数据集对话框，接下来的操作和服务器数据集操作相同。二者的区别在于服务器数据集的配置信息保存在当前服务器的datasource.xml文件当中，当前服务器上面设计任意一张报表都可以使用该数据集，而报表数据集则将信息保存到当前的CPT文件当中，即只能适用于当前打开的这一张报表。</span></div><a name="a:3."><div class=doc_h1>3. <span>视图查询</span></div></a><div class=doc_description><span>视图查询是指对定义好的数据源中的视图进行操作。</span></div><a name="a:3.1"><div class=doc_h2>3.1 <span>数据库查询</span></div></a><div class=doc_description><span>选择服务器下服务器数据集，点击服务器数据集窗口的左上角的</span><img src=0-4.png></img><span>按钮，选择数据库查询，然后给数据库查询命名，接着我们就可以添加视图查询等等。</span></div><div class=doc_description><img src=0-5.png></img></div><a name="a:3.2"><div class=doc_h2>3.2 <span>使用视图查询</span></div></a><div class=doc_description><span>选择数据源后我们就可以使用SQL对视图查询进行操作。如下我们以FRDemo-视图数据库为例：</span></div><div class=doc_description><span>在查询编辑器中写sql，select * from 发货单.(发货单是某个视图查询的名字)，然后点击预览可以看到视图查询引用成功。</span></div><div class=doc_description><img src=0-6.png></img></div><div class=doc_description><span class="doc_warning">注：小技巧，我们可以将数据连接中的表、视图直接拖动到查询编辑器中。</span></div><a name="a:4."><div class=doc_h1>4. <span>模糊查询</span></div></a><div class=doc_description><span>在表下方有一块空白搜索框，它们用作模糊查询。例如想要搜索客户相关的表，在搜索框中填入客户二字，会进行自动搜索进行模糊匹配：</span></div><div class=doc_description><img src=0-7.png></img></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

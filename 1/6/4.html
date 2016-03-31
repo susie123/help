@@ -1,0 +1,237 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>聚合报表设计</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../resources/default.css" />
+		<script type="text/javascript" src="../../resources/default.js"></script>
+		<script type="text/javascript" src="../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../folder.html">设计思路</a> >> <a class="alink" href="folder.html">模板设计</a> >> <a class="alink" href="4.html">聚合报表设计</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							聚合报表设计
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">聚合报表设计界面</a></li><li><a href="#a:2.">新建聚合报表</a></li><li><a href="#a:3.">新增了导出（excel/word/pdf）、打印（pdf、applet、flash）功能</a></li><li><a href="#a:4.">选中块</a></li><li><a href="#a:5.">块间的运算</a></li><li><a href="#a:6.">聚合报表预览</a></li></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<div class=doc_key><span>聚合报表，打印，导出</span></div><a name="a:1."><div class=doc_h1>1. <span>聚合报表设计界面</span></div></a><div class=doc_description><span>聚合报表指一个报表中包含多个模块，每一块都类似一张单独的报表或者一张图表，块与块之间相对独立，互不影响。</span></div><div class=doc_description><span class="doc_warning">注：需要使用多个聚合块时，再拖动报表类型聚合块到模板设计界面就OK了。操作同上，多聚合块之间是没有影响的。</span></div><a name="a:2."><div class=doc_h1>2. <span>新建聚合报表</span></div></a><ul class=doc_bullets><li>文件菜单增加“新建聚合报表”，可以点击直接新建聚合报表</li></ul><div class=doc_description><img src=4-1.png></img></div><ul class=doc_bullets><li>新建工作薄的时候，添加sheet的时候可以添加普通报表及聚合报表新建的聚合报表，添加sheet的时候只能添加聚合报表</li></ul><div class=doc_description><img src=4-2.jpg></img></div><ul class=doc_bullets><li>新建的聚合报表，添加sheet的时候只能添加聚合报表</li></ul><div class=doc_description><img src=4-3.png></img></div><a name="a:3."><div class=doc_h1>3. <span>新增了导出（excel/word/pdf）、打印（pdf、applet、flash）功能</span></div></a><div class=doc_description><img src=4-4.png></img></div><div class=doc_description><img src=4-5.png></img></div><a name="a:4."><div class=doc_h1>4. <span>选中块</span></div></a><div class=doc_description><span>选中块进行移动时，只要不放开鼠标，移动的块可以覆盖在其他块上，越过它放到其他空白处，但是如果移动的时候，在覆盖其他块的时候放开了鼠标，此时块自动回到他原来的位置。</span></div><div class=doc_description><span class="doc_warning">拖入新的组件时，只能拖到空白区域，在非空白区域会提示“不能重叠，请拖至空白区域”，如下图</span></div><div class=doc_description><img src=4-6.png></img></div><a name="a:5."><div class=doc_h1>5. <span>块间的运算</span></div></a><div class=doc_description><span>在组件里面获取其他组件单元格的值，可直使用公式如</span><span class="doc_formula">=block1~A1</span><span>：</span></div><div class=doc_description><img src=4-7.png></img></div><div class=doc_description><span class="doc_formula">block1</span><span>是聚合块名字，查看方法，点击聚合块右下角，可拖动聚合块的按钮上，右侧属性表中，聚合块名则是模块的名字了。</span></div><div class=doc_description><img src=4-8.gif></img></div><a name="a:6."><div class=doc_h1>6. <span>聚合报表预览</span></div></a><div class=doc_description><span>由于聚合报表是一个sheet的形式存在工作簿中的，而新建工作簿时有一个默认的普通模板，所以在预览时，会将前面的sheet1这个空白模板也预览出来，如果不想要这个空白页，直接将sheet1删除即可。</span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

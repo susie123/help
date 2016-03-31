@@ -1,0 +1,237 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>数据集参数</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../resources/default.css" />
+		<script type="text/javascript" src="../../resources/default.js"></script>
+		<script type="text/javascript" src="../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../folder.html">参数入门</a> >> <a class="alink" href="folder.html">参数的种类与区别</a> >> <a class="alink" href="1.html">数据集参数</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							数据集参数
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">数据集参数原理</a></li><li><a href="#a:2.">制作步骤</a></li><ul><li><a href="#a:2.1">打开报表</a></li><li><a href="#a:2.2">定义数据源参数</a></li><li><a href="#a:2.3">过滤数据</a></li><li><a href="#a:2.4">制作参数界面</a></li><li><a href="#a:2.5">保存报表并发布</a></li></ul></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<a name="a:1."><div class=doc_h1>1. <span>数据集参数原理</span></div></a><div class=doc_description><span>类似通信、监控行业，每天都有海量数据生成，数据库表中总数据量非常大，而报表中往往只要当天的几百条数据就可以了。</span></div><div class=doc_description><span>如果使用报表参数，就需要先取出所有数据，再进行过滤，取数+过滤，将消耗大量时间；</span></div><ul class=doc_bullets><li>简单应用</li></ul><div class=doc_description><span>可以在定义数据集sql的时候，直接使用where条件过滤出需要的数据，从而大大缩短报表取数时间，类似下面的sql：</span></div><div class=doc_description><span class="doc_sql">SELECT * FROM 销量 where 地区 = '${地区}'</span></div><ul class=doc_bullets><li>带公式的应用</li></ul><div class=doc_description><span>数据集sql中可以使用</span><span class="doc_warning">参数宏${}</span><span>动态地生成过滤条件，${}中的语句在FineReport报表中执行，将${}的执行结果与sql语句拼接起来形成最终的查询语句，传递给数据库执行，可以使用多个${}，如下语句：</span></div><div class=doc_description><span class="doc_sql">SELECT * FROM 订单  where 1=1  ${if(len(area) == 0,"","and 货主地区 = '" + area + "'")} ${if(len(province) == 0,"","and 货主省份 = '" + province + "'")}</span></div><div class=doc_description><span>${}中可以使用所有内置的FR公式，如if函数；</span></div><div class=doc_description><span>${}中除了FR内置的函数名、常量外，其他变量就是</span><span class="doc_warning">数据集参数</span><span>。</span></div><div class=doc_description><span>如上SQL语句，if公式是FR内置的公式，变量area就是数据集参数，如果len(area)!=0，即area参数不为空，比如说area的值为华东，那么if语句的执行结果为</span><span class="doc_formula">and 货主地区='华东'</span><span>，然后再把这句话拼接到SQL语句当中，SQL语句就变成：</span></div><div class=doc_description><span class="doc_sql">SELECT * FROM 订单  where 1=1 and 货主地区='华东'</span></div><a name="a:2."><div class=doc_h1>2. <span>制作步骤</span></div></a><a name="a:2.1"><div class=doc_h2>2.1 <span>打开报表</span></div></a><div class=doc_description><span>打开报表</span><span class="doc_dir">%FR_HOME%\WebReport\WEB-INF\reportlets\doc\Primary\GroupReport\Group.cpt</span><span>。</span></div><a name="a:2.2"><div class=doc_h2>2.2 <span>定义数据源参数</span></div></a><div class=doc_description><span>修改数据集SQL语句为</span><span class="doc_sql">SELECT * FROM 销量 where 地区 = '${地区}'</span><span>，点击下方的刷新按钮显示出参数，默认值设置为“华北”：</span></div><div class=doc_description><img src=1-1.png></img></div><div class=doc_description><span class="doc_warning">注：在数据集SQL语句中，使用${para}做为一个参数宏，其中变量para为参数名，若字段值为字符串则加上引号如'${para}'。</span></div><a name="a:2.3"><div class=doc_h2>2.3 <span>过滤数据</span></div></a><div class=doc_description><span>若参数地区的值为华北，那么${地区}这个参数宏最终的值就是华北，数据集SQL即为</span><span class="doc_sql">SELECT * FROM [销量] where 地区 = '华北'</span><span>；</span></div><div class=doc_description><span>可以看出，数据集取数时就会根据数据源参数过滤出需要的数据，因此不需要额外设置数据列过滤了。</span></div><a name="a:2.4"><div class=doc_h2>2.4 <span>制作参数界面</span></div></a><div class=doc_description><span>仍然使用</span><span><a href="../../3/3.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">默认的参数界面</a></span><span>。</span></div><div class=doc_description><span class="doc_warning">注：数据集参数的默认值无法传递到参数面板的控件中，控件默认值需要另外设置，详细请参照</span><span><a href="../../13/30/0/folder.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">控件默认值</a></span></div><a name="a:2.5"><div class=doc_h2>2.5 <span>保存报表并发布</span></div></a><div class=doc_description><span>保存报表并分页预览，便可以看到效果。</span></div><div class=doc_description><span>模板效果在线查看请点击</span><span><a href="http://www.finereporthelp.com:8889/demo/ReportServer?reportlet=doc/Primary/Parameter/Parameter_1.cpt" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">Parameter_1.cpt</a></span></div><div class=doc_description><span>已完成的模板，可参见</span><span class="doc_dir">%FR_HOME%\WebReport\WEB-INF\reportlets\doc\Primary\Parameter\Parameter_1.cpt</span></div><div class=doc_description><span class="doc_warning">注：若模板中有多个数据集并且定义的参数名相同，在参数界面中可以通用一个参数控件。即若数据源参数名称相同，只需定义一个参数控件即可。</span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,279 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>调用包含临时表的sqlserver存储过程</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../../../resources/default.css" />
+		<script type="text/javascript" src="../../../../resources/default.js"></script>
+		<script type="text/javascript" src="../../../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../../../folder.html">设计思路</a> >> <a class="alink" href="../../folder.html">数据集</a> >> <a class="alink" href="../folder.html">存储过程</a> >> <a class="alink" href="folder.html">SqlServer存储过程相关问题</a> >> <a class="alink" href="2.html">调用包含临时表的sqlserver存储过程</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							调用包含临时表的sqlserver存储过程
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">问题描述</a></li><ul><li><a href="#a:1.1">所遇问题情况</a></li><li><a href="#a:1.2">问题原因</a></li><li><a href="#a:1.3">解决方案</a></li></ul><li><a href="#a:2.">本地临时表和全局临时表的调用</a></li><ul><li><a href="#a:2.1">定义本地临时表</a></li><li><a href="#a:2.2">定义全局临时表</a></li></ul></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<a name="a:1."><div class=doc_h1>1. <span>问题描述</span></div></a><a name="a:1.1"><div class=doc_h2>1.1 <span>所遇问题情况</span></div></a><div class=doc_description><span>如：您通过自己写的程序创建了一个临时表，然后调用一个存储过程，对某些表进行一些计算后，将结果存入临时表中，最后查询出临时表的数据。您会发现，在定义数据集时调用存储过程返回的数据是空的。</span></div><a name="a:1.2"><div class=doc_h2>1.2 <span>问题原因</span></div></a><div class=doc_description><span>首先可能是因为您创建的临时表与查询的临时表的数据不在同一个会话中即没有在数据集端定义存储过程，导致数据无法共享；创建和查询的临时表已经在同一会话中，但是在调用前后没有加</span><span class="doc_formula">SET NOCOUNT ON</span><span>和</span><span class="doc_formula">SET NOCOUNT OFF</span><span>。</span></div><a name="a:1.3"><div class=doc_h2>1.3 <span>解决方案</span></div></a><div class=doc_description><span>您可在不改变原来定义好的存储过程的情况下，在FineReport定义数据集时创建临时表（可以是多个），之后再调用存储过程或一般sql语句对表做一定的操作，最后select查询出临时表即可。从而保证，创建临时表、操作临时表、查询临时表在同一个会话中；另外需要在数据集的头和尾分别加入</span><span class="doc_formula">SET NOCOUNT ON</span><span>和</span><span class="doc_formula">SET NOCOUNT OFF</span><span>。</span></div><div class=doc_description><span>您可在不改变原来定义好的存储过程的情况下，在FineReport定义数据集时创建临时表（可以是多个），之后再调用存储过程或一般sql语句对表做一定的操作，最后select查询出临时表即可。从而保证，创建临时表、操作临时表、查询临时表在同一个会话中；另外需要在数据集的头和尾分别加入</span><span class="doc_formula">SET NOCOUNT ON</span><span>和</span><span class="doc_formula">SET NOCOUNT OFF</span><span>。</span></div><div class=doc_description><span>下面以示例讲解FineReport中，使用到存储过程和临时表的创建与使用的方法。其创建的临时表，可分为本地临时表与全局临时表的情况。</span></div><div class=doc_description><span class="doc_navigation">本地临时表</span><span>：仅在当前会话中可见，创建本地临时表名前面有一个编号符</span><span class="doc_formula">(#table_name)</span><span>。</span></div><div class=doc_description><span class="doc_navigation">全局临时表</span><span>：在所有会话中都可见，创建全局临时表名前面有两个编号符</span><span class="doc_formula">(##table_name)</span><span>。</span></div><a name="a:2."><div class=doc_h1>2. <span>本地临时表和全局临时表的调用</span></div></a><a name="a:2.1"><div class=doc_h2>2.1 <span>定义本地临时表</span></div></a><div class=doc_description><span>报表数据源的定义，例如如下：</span></div><div class=doc_description><img src=2-1.png></img></div><div class=doc_description><span>具体代码如下：</span></div><div class=doc_description><span style="position:relative;"><input type="button" class="copy" value="代码复制"> </input></span><span><textarea class="java" name="code">SET NOCOUNT ON
+create table #aa(
+[id] [int] NOT NULL,
+[单据类别] [varchar] (20) NOT NULL,
+[单据编号] [varchar] (20) NOT NULL,
+);
+insert into #aa values(1,'a1','a2')
+insert into #aa values(2,'b1','b2') 
+insert into #aa values(3,'c1','c2')
+insert into #aa values(4,'d1','d2')
+exec dbo.proc_aa
+select * from #aa
+SET NOCOUNT OFF
+</textarea></span></div><div class=doc_description><span>如上图中，定义过程：</span></div><ul class=doc_bullets><li>先创建临时表</li></ul><div class=doc_description><span>创建临时表，但因创建临时表时有插入语句，所以必须这里要先添加</span><span class="doc_formula">SET NOCOUNT ON</span><span>语句。</span></div><div class=doc_description><span class="doc_warning">说明：设置SET NOCOUNT ON 为不返回受影响行数，让数据库端不将影响的行数返回给客户端，否则会报该语句没有返回结果集错误的。下面的创建全局临时表中，亦是如此。</span></div><ul class=doc_bullets><li>调用存储过程</li></ul><div class=doc_description><span>若您创建的存储过程，是如下的情况：</span></div><div class=doc_description><span style="position:relative;"><input type="button" class="copy" value="代码复制"> </input></span><span><textarea class="java" name="code">CREATE PROCEDURE proc_aa
+AS
+BEGIN
+insert into #aa values(5,'a1','a2')
+insert into #aa values(6,'b1','b2')
+insert into #aa values(7,'c1','c2')
+insert into #aa values(8,'d1','d2')
+END
+</textarea></span></div><div class=doc_description><span>如上图中，直接调用存储过程即可。</span></div><ul class=doc_bullets><li>最后查询临时表</li></ul><div class=doc_description><span>最后再查询临时表。点击这边的</span><img src=2-2.png></img><span>，就可看到效果，查看到的临时表的数据如下：</span></div><div class=doc_description><img src=2-3.png></img></div><div class=doc_description><span>这样即是已完成本地临时表的定义，下面就可应用相关数据作报表的操作了。</span></div><div class=doc_description><span class="doc_warning">注：先调用存储过程，再创建临时表，然后在报表中调用的方式是不可行的，这样是取不到本地临时表的。因本地临时表，不能在存储过程中定义之后，再在数据源定义中通过语句调用。因此时是属于不同的会话，所以需先创建临时表。</span></div><a name="a:2.2"><div class=doc_h2>2.2 <span>定义全局临时表</span></div></a><div class=doc_description><span>报表数据源的定义，例如如下：</span></div><div class=doc_description><img src=2-4.png></img></div><div class=doc_description><span>具体代码如下：</span></div><div class=doc_description><span style="position:relative;"><input type="button" class="copy" value="代码复制"> </input></span><span><textarea class="java" name="code">SET NOCOUNT ON
+drop table ##bb
+create table ##bb(
+[id] [int] NOT NULL,
+[单据类别] [varchar] (20) NOT NULL,
+[单据编号] [varchar] (20) NOT NULL,
+);
+insert into ##bb values(1,'a1','a2')
+insert into ##bb values(2,'b1','b2')
+insert into ##bb values(3,'c1','c2')
+exec dbo.proc_bb
+select * from ##bb
+SET NOCOUNT OFF
+</textarea></span></div><div class=doc_description><span>如上图中，定义过程：</span></div><ul class=doc_bullets><li>创建临时表</li></ul><div class=doc_description><span>可看到，大致同于上面所讲的本地临时表的定义，只是稍微有点变化。就是在创建临时表前，又多了句</span><span class="doc_formula">drop table </span><span>表的形式。</span></div><ul class=doc_bullets><li>调用其存储过程</li></ul><div class=doc_description><span>若您创建的存储过程，是如下的情况：</span></div><div class=doc_description><span style="position:relative;"><input type="button" class="copy" value="代码复制"> </input></span><span><textarea class="java" name="code">CREATE PROCEDURE proc_bb
+AS
+BEGIN
+insert into ##bb values(5,'a1','a2')
+insert into ##bb values(6,'b1','b2')
+insert into ##bb values(7,'c1','c2')
+insert into ##bb values(8,'d1','d2')
+END
+</textarea></span></div><div class=doc_description><span>如上图中，直接调用存储过程即可。</span></div><ul class=doc_bullets><li>查询临时表</li></ul><div class=doc_description><span>最后再查询临时表。点击这边的</span><img src=2-5.png></img><span>，就可看到效果，查看到的临时表的数据如下：</span></div><div class=doc_description><img src=2-6.png></img></div><div class=doc_description><span>这样即是完成了全局临时表的定义，下面就可应用相关数据作报表的操作了。</span></div><div class=doc_description><span class="doc_warning">说明：这种临时表的定义方式比较自由，怎么定义均可，可在存储过程中定义之后再在数据源定义时进行一些修改之类的操作，只是如果定义就要在数据源定义时，写一个drop table 表（如：##bb）语句，因这边只要数据库不关闭就会一直存在的，不能重复创建的。且第一次预览时会报错，因此时drop了一个不存在的表，第二次就会好了。全局临时表一定要再定义之后预览一次的。</span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

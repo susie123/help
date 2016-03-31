@@ -1,0 +1,238 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>SAP连接数据库</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../resources/default.css" />
+		<script type="text/javascript" src="../../resources/default.js"></script>
+		<script type="text/javascript" src="../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../folder.html">设计思路</a> >> <a class="alink" href="folder.html">数据连接</a> >> <a class="alink" href="2.html">SAP连接数据库</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							SAP连接数据库
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">描述</a></li><li><a href="#a:2.">环境准备</a></li><ul><li><a href="#a:2.1">windows系统服务器</a></li><li><a href="#a:2.2">linux系统服务器</a></li><li><a href="#a:2.3">本地设计器</a></li></ul><li><a href="#a:3.">SAP数据连接</a></li><ul><li><a href="#a:3.1">建立连接</a></li><li><a href="#a:3.2">连接测试</a></li></ul></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<div class=doc_key><span>SAP，SAP连接数据库，sap，sap数据连接，sap数据集，sapjar包导入，jar包导入，dll文件导入，接口导入，加载本地库，加载sap本地库</span></div><a name="a:1."><div class=doc_h1>1. <span>描述</span></div></a><div class=doc_description><span>在客户SAP系统集成时，在7.0.4版本之前只能通过程序数据集或者是ETL工具进行取数，实现起来非常麻烦，希望有类似</span><span><a href="../../1/0/7.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">JDBC数据连接</a></span><span>的设置方式来设置SAP数据连接。</span></div><div class=doc_description><span>FineReport在8.0版本中，将SAP数据连接功能做成一个插件的功能，启用插件后，可在</span><span class="doc_navigation">服务器数据连接</span><span>处新增数据连接类型</span><span class="doc_navigation">SAP数据连接</span><span>，在数据集中添加SAP数据集类型。</span></div><a name="a:2."><div class=doc_h1>2. <span>环境准备</span></div></a><div class=doc_description><span>与SAP系统进行连接，需要导入SAP接口包和本地库，并确保运行的JVM能够找到接口包和本地库，下载地址为</span><span><a href="http://www.finereporthelp.com/download/SAP" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAPjar包和本地库</a></span><span>，服务器和本地设计器导入的接口包和本地库有所区别，下面一一介绍。</span></div><a name="a:2.1"><div class=doc_h2>2.1 <span>windows系统服务器</span></div></a><div class=doc_description><span>报表工程部署在windows系统的服务器下，以tomcat为例：</span></div><ul class=doc_bullets><li>32位jdk</li></ul><div class=doc_description><span>windows系统安装的32位的jdk，根据jdk版本的不同下载不同的接口包和本地库。</span></div><div class=doc_description><span class="doc_navigation">jdk1.4：</span><span>下载接口包sapjco.jar和本地库librfc32.dll、sapjcorfc.dll，下载地址为：进入</span><span><a href="http://www.finereporthelp.com/download/SAP" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载</a></span><span>，选择</span><span class="doc_dir">sapjco2_window_32bit</span><span>，将上述3文件下载下来，sapjco.jar接口包放在</span><span class="doc_dir">%tomcat%\lib</span><span>文件夹下，librfc32.dll和sapjcorfc.dll本地库放在</span><span class="doc_dir">C:\Windows\System32</span><span>文件夹下。</span></div><div class=doc_description><span class="doc_navigation">jdk1.5及以上：</span><span>下载接口包sapjco3.jar和本地库sapjco3.dll，下载地址为：进入</span><span><a href="http://www.finereporthelp.com/download/SAP" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载</a></span><span>，选择</span><span class="doc_dir">sapjco3_windows_32bit</span><span>，将两个文件下载下来，sapjco3.jar接口包放在</span><span class="doc_dir">%tomcat%\lib</span><span>文件夹下，sapjco3.dll本地库放在</span><span class="doc_dir">C:\Windows\System32</span><span>文件夹下。</span></div><div class=doc_description><span class="doc_warning">注：如果数据连接失败，可以尝试将dll文件放置在系统jre的bin目录下，比如说，C:\Program Files\Java\jre7\bin。</span></div><ul class=doc_bullets><li>64位jdk</li></ul><div class=doc_description><span>windows系统安装的64位的jdk，根据jdk版本的不同下载不同的接口包和本地库。文件的放置路径与32位jdk的放置路径一致，只是下载地址有所不同。</span></div><div class=doc_description><span class="doc_navigation">jdk1.4：</span><span>下载地址为：进入SAP官方下载页面</span><span><a href="https://websmp109.sap-ag.de/connectors" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载</a></span><span>，在官网中找到sapjco.jar和本地库librfc32.dll、sapjcorfc.dll，按照windows32位jdk的放置路径存放sapjco.jar和本地库librfc32.dll、sapjcorfc.dll。</span></div><div class=doc_description><span class="doc_navigation">jdk1.5及以上：</span><span>下载地址为：进入</span><span><a href="http://www.finereporthelp.com/download/SAP" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载</a></span><span>，选择</span><span class="doc_dir">sapjco3_windows_64bit</span><span>，将两个文件下载下来，按照windows32位jdk的放置路径存放sapjco3.jar和sapjco3.dll。</span></div><div class=doc_description><span class="doc_warning">注：win2003和windows xp的系统在连接SAP时，需要下载安装Microsoft Visual C++  2005 SP1，32位系统请点击</span><span><a href="http://www.finereporthelp.com/download/jar/vcredist_x86.exe" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">Microsoft Visual C++  2005 SP1 x86</a></span><span></span><span class="doc_warning">下载安装，64位系统请点击</span><span><a href="http://www.finereporthelp.com/download/jar/vcredist_x64.exe" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">microsoft visual c++ 2005sp1_x64.rar</a></span></div><a name="a:2.2"><div class=doc_h2>2.2 <span>linux系统服务器</span></div></a><div class=doc_description><span>报表工程部署在linux系统的服务器下，与windows系统服务器类似，也分32位和64位的jdk，以tomcat为例：</span></div><ul class=doc_bullets><li>32位jdk</li></ul><div class=doc_description><span>根据jdk的版本不同，下载不同的接口包和本地库。</span></div><div class=doc_description><span class="doc_navigation">jdk1.4：</span><span>下载接口包sapjco.jar和本地库libsapjcorfc.so、librfccm.so，下载地址为：进入</span><span><a href="http://www.finereporthelp.com/download/SAP" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载</a></span><span>，选择</span><span class="doc_dir">sapjco2_linux</span><span>，将两个文件下载下来，sapjco2.jar接口包放在</span><span class="doc_dir">%tomcat%\lib</span><span>文件夹下，本地库so文件通过Linux终端用export命令将2个本地库所在文件夹的路径加入到PATH变量里面去，命令如下：</span></div><div class=doc_description><span class="doc_formula">export PATH=$PATH:&lt;dir&gt;</span></div><div class=doc_description><span>比如说libsapjcorfc.so和librfccm.so文件在桌面的文件夹sapjco下面，那么命令为：</span><span class="doc_formula">export PATH=$PATH:/home/mint/Desktop/sapjco2
+</span><span>.</span></div><div class=doc_description><span class="doc_navigation">jdk1.5及以上：</span><span>下载接口包sapjco3.jar和本地库libsapjco3.so，下载地址为：进入</span><span><a href="http://www.finereporthelp.com/download/SAP" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载</a></span><span>，选择</span><span class="doc_dir">sapjco3_linux_32bit</span><span>，将两个文件下载下来，sapjco3.jar接口包放在</span><span class="doc_dir">%tomcat%\lib</span><span>文件夹下，libsapjco3.so本地库加入到PATH变量中的方法与jdk1.4版本里面的一致。</span></div><ul class=doc_bullets><li>64位jdk</li></ul><div class=doc_description><span class="doc_navigation">jdk1.4：</span><span>下载地址为：进入SAP官方下载页面</span><span><a href="https://websmp109.sap-ag.de/connectors" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载</a></span><span>，在官网上找到64位jdk1.4的接口包sapjco.jar和本地库libsapjcorfc.so、librfccm.so</span><span>，按照linux32位jdk的放置路径存放sapjco.jar和libsapjcorfc.so、librfccm.so。</span></div><div class=doc_description><span class="doc_navigation">jdk1.5及以上：</span><span>下载地址为：进入SAP官方下载页面</span><span><a href="https://websmp109.sap-ag.de/connectors" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载</a></span><span>，在官网上找到64位的接口包sapjco3.jar和本地库libsapjco3.so</span><span>，按照linux32位jdk的放置路径存放sapjco3.jar和libsapjco3.so。</span></div><a name="a:2.3"><div class=doc_h2>2.3 <span>本地设计器</span></div></a><div class=doc_description><span>如果是在本地设计器上设计报表使用到SAP数据连接，由于FineReport设计器启动时是启动在32位jdk1.6版本上的，所以，不论系统安装jdk的32位的还是64位的，我们只需要下载windows系统下的32位的jdk1.6版本的sapjco3.jar和sapjco3.dll，进入</span><span><a href="http://www.finereporthelp.com/download/SAP" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP下载页面</a></span><span>，选择</span><span class="doc_dir">sapjco3_windows_32bit</span><span>，下载sapjco3.dll和sapjco3.jar，将sapjco3.jar放置在</span><span class="doc_dir">D:\FineReport_8.0\lib</span><span>下面，dll本地库文件放置在</span><span class="doc_dir">D:\FineReport_8.0\jre\bin</span><span>文件夹下即可。</span></div><a name="a:3."><div class=doc_h1>3. <span>SAP数据连接</span></div></a><a name="a:3.1"><div class=doc_h2>3.1 <span>建立连接</span></div></a><div class=doc_description><span>选择</span><span class="doc_navigation">服务器>定义数据连接</span><span>，点击</span><img src=2-1.png></img><span>按钮，选择</span><span class="doc_navigation">SAP</span><span>，如下图：</span></div><div class=doc_description><img src=2-2.png></img></div><div class=doc_description><span class="doc_navigation">主机名：</span><span>局域网中已配置的SAP的主机名称，也可以写该机器的IP地址。</span></div><div class=doc_description><span class="doc_navigation">System Number：</span><span>SAP系统中设置的属性，用于交互的端口号，一般来说是00，具体根据SAP系统来定。</span></div><div class=doc_description><span class="doc_navigation">客户端：</span><span>SAP 系统管理的业务和数据的最大有效集合，也是SAP系统的一个属性，具体根据SAP系统决定。</span></div><div class=doc_description><span class="doc_navigation">连接池属性：</span><span>SAP系统中的容量和最大连接数。</span></div><div class=doc_description><span class="doc_warning">注：如这里没有SAP连接，如下图，则需要启用一下插件，设置方法往下看。</span><span></span></div><div class=doc_description><img src=2-3.png></img></div><div class=doc_description><span>点击</span><span class="doc_dir">服务器&gt;插件管理</span><span>，如下图所示。</span></div><div class=doc_description><img src=2-4.png></img></div><div class=doc_description><span>弹出</span><span class="doc_dir">插件管理</span><span>菜单，点击</span><span class="doc_dir">已安装</span><span>，选择SAP数据集，点击左下角的</span><span class="doc_dir">启用</span><span>按钮，如下图所示。</span></div><div class=doc_description><img src=2-5.png></img></div><div class=doc_description><img src=2-6.png></img></div><div class=doc_description><span>点击重启设计器，稍后设计器会自动重启，重启后插件即被启用成功，数据连接里就会出现SAP数据连接，如下图所示。</span></div><div class=doc_description><img src=2-7.png></img></div><a name="a:3.2"><div class=doc_h2>3.2 <span>连接测试</span></div></a><div class=doc_description><span>点击测试连接，如果提示连接成功则表示数据连接新建好了，点击确定退出数据连接设置面板。</span></div><div class=doc_description><img src=2-8.png></img></div><div class=doc_description><span>连接成功之后就可以在服务器数据集、模板数据集等地方使用该数据连接，通过该数据连接从SAP系统中取数，详细请查看</span><span><a href="../../1/1/2/folder.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">SAP数据集</a></span><span>.</span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

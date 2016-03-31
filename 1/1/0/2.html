@@ -1,0 +1,238 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>XML数据集</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../../resources/default.css" />
+		<script type="text/javascript" src="../../../resources/default.js"></script>
+		<script type="text/javascript" src="../../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../../folder.html">设计思路</a> >> <a class="alink" href="../folder.html">数据集</a> >> <a class="alink" href="folder.html">文件数据集</a> >> <a class="alink" href="2.html">XML数据集</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							XML数据集
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">概述</a></li><li><a href="#a:2.">定义文件数据集</a></li><ul><li><a href="#a:2.1">选择xml文件</a></li><li><a href="#a:2.2">节点选择</a></li><li><a href="#a:2.3">效果查看</a></li></ul><li><a href="#a:3.">动态XML数据集</a></li><li><a href="#a:4.">远程XML数据集</a></li><ul><li><a href="#a:4.1">直接调用XML文件</a></li></ul></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<a name="a:1."><div class=doc_h1>1. <span>概述</span></div></a><div class=doc_description><span>XML数据集，就是指数据源是一系列的xml文件。而我们就是要将这些文件作为数据来源，用FineReport来呈现这些数据，并做相应的数据分析。</span></div><div class=doc_description><span>假设</span><span class="doc_dir">当前报表环境\WebReport\WEB-INF\reportlets</span><span>目录下已经存在frtest.xml.，其内容如下，下面我们来看下文本数据集的制作步骤：</span></div><div class=doc_description><img src=2-1.png></img></div><a name="a:2."><div class=doc_h1>2. <span>定义文件数据集</span></div></a><div class=doc_description><span>下面我们来为大家介绍下如何定义文件数据集。</span></div><div class=doc_description><span>点击数据集下面的加号，选择文件数据集，如下图：</span></div><div class=doc_description><img src=2-2.png></img></div><a name="a:2.1"><div class=doc_h2>2.1 <span>选择xml文件</span></div></a><div class=doc_description><span>然后弹出文件数据集对话框，将文件类型选择：xml，点击本地文件后面的</span><span class="doc_navigation">选择</span><span>按钮，选择已经存在的frtest.xml文件，右侧的</span><span class="doc_navigation">关键节点</span><span>面板即会自动刷新获取xml中的所有节点信息，并将节点以树状结构的形式显示出来，如下图：</span></div><div class=doc_description><img src=2-3.png></img></div><div class=doc_description><span class="doc_warning">注：若一节点，有多个同名同级子节点，但各个子节点的叶子节点不同（存储数据的节点标志），取叶子节点的并集，如下图所示：</span></div><div class=doc_description><img src=2-4.png></img></div><div class=doc_description><span class="doc_warning">另：如果xml数据集中有2个根节点，那么FineReport会自动在顶部添加一个没有名字的空根节点。</span></div><a name="a:2.2"><div class=doc_h2>2.2 <span>节点选择</span></div></a><div class=doc_description><span>FineReport的xml文件数据集支持将文件中的所有节点以树状结构显示出来，但是不能像</span><span><a href="../../../1/1/2.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">存储过程</a></span><span>一样返回多个结果集，将每个节点的数据均显示在一个数据集中，一次只能返回一个子节点中的所有数据，想要显示哪个子节点的信息就选中该子节点即可，最后数据来源于选中节点的子节点、子节点的子节点直至叶子节点。</span></div><div class=doc_description><span>其返回数据集中的数据遵循以下五个规则：</span></div><div class=doc_description><span class="doc_dir">1、选中节点只有叶子节点，则叶子节点的并集为数据集字段；</span></div><div class=doc_description><img src=2-5.png></img></div><div class=doc_description><span class="doc_dir">2、选中节点只有一个非叶子节点的子节点，则此子节点的叶子节点为数据集字段，如选中PickDetail，效果与选中PrintPickDetailEntity一致；</span></div><div class=doc_description><img src=2-6.png></img></div><div class=doc_description><span class="doc_dir">3、选中节点有多个子节点（非叶子节点），此时按第一个子节点来计算。如选中pactDetail，有多个子节点（PrintPackEntity和Other），此时按照第一个子节点“PrintPackEntity”来计算</span></div><div class=doc_description><img src=2-7.png></img></div><div class=doc_description><span class="doc_dir">4、选中节点既有叶子节点，又有普通子节点（非叶子节点），此情况为一对多，(其中叶子节点为“一”，普通子节点的叶子节点为“多），则数据集字段为所有叶子节点加第一个普通子节点的叶子节点，数据内容：其中“一”跟随“多”来扩展，如选中根节点PickBillPrintEntity，他有三个叶子节点和两个子节点（pickDetail和PacDetail，选第一个），数据如下图，显示其三个叶子节点和第一个子节点中的数据：
+</span></div><div class=doc_description><img src=2-8.png></img></div><div class=doc_description><span class="doc_dir">5、若同一叶子节点有多个值，用“；”隔开，如下图，author这个字段的值为：James McGovern;Per Bothner;Kurt Cagle;James Linn;Vaidyanathan Nagaraian。</span></div><div class=doc_description><img src=2-9.png></img></div><div class=doc_description><span class="doc_warning">注：必须选中一个节点，不选中节点，点击确定，预览为空。</span></div><div class=doc_description><span>示例中只有一个子节点Customers，我们这里选中父节点frtest，子节点Customers或者叶子节点的任何一个，其返注回的结果都一样，那么就选中Customers子节点，点击</span><span class="doc_navigation">预览</span><span>按钮，如下图：</span></div><div class=doc_description><img src=2-10.png></img></div><a name="a:2.3"><div class=doc_h2>2.3 <span>效果查看</span></div></a><div class=doc_description><span>设置完后，可以看到模板数据集中会增加一个名为'File1'的数据集，如下图：</span></div><div class=doc_description><img src=2-11.png></img></div><a name="a:3."><div class=doc_h1>3. <span>动态XML数据集</span></div></a><div class=doc_description><span>其制作步骤与</span><span><a href="../../../1/1/0/0.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">Excel数据集</a></span><span>相同。</span></div><a name="a:4."><div class=doc_h1>4. <span>远程XML数据集</span></div></a><div class=doc_description><span>远程XML数据集有两种：第一种是通过jsp调用，其实现思路与</span><span><a href="../../../1/1/0/0.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">Excel数据集</a></span><span>相同；第二种是直接通过URL调用XML，下面我们来介绍第二种的实现。</span></div><a name="a:4.1"><div class=doc_h2>4.1 <span>直接调用XML文件</span></div></a><div class=doc_description><span>直接调用xml文件，可以通过在url中输入：</span><span class="doc_dir">http://ip:端口/应用名称/xml文件</span><span>来调用。</span></div><div class=doc_description><span>假设tomcat环境下的WebReport工程目录下存在上面示例中用的frtest.xml，下面可以在URL中输入：</span><span class="doc_dir">http://localhost:8080/WebReport/frtest.xml</span><span>，如下图所示：</span></div><div class=doc_description><img src=2-12.png></img></div><div class=doc_description><span>点击</span><span class="doc_navigation">关键节点</span><span>面板的刷新按钮，读取xml文件中而的数据，然后选中需要使用的节点，选择方式与本地xml文件一致。</span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

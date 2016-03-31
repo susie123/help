@@ -1,0 +1,332 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>通用查询取数(适用于ECC 6以上版本)</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../../resources/default.css" />
+		<script type="text/javascript" src="../../../resources/default.js"></script>
+		<script type="text/javascript" src="../../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../../folder.html">设计思路</a> >> <a class="alink" href="../folder.html">数据集</a> >> <a class="alink" href="folder.html">SAP数据集</a> >> <a class="alink" href="2.html">通用查询取数(适用于ECC 6以上版本)</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							通用查询取数(适用于ECC 6以上版本)
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">描述</a></li><ul><li><a href="#a:1.1">添加ABAP Function</a></li></ul><li><a href="#a:2.">示例</a></li><ul><li><a href="#a:2.1">列设置</a></li><li><a href="#a:2.2">表设置</a></li><li><a href="#a:2.3">条件设置</a></li><li><a href="#a:2.4">结果查看</a></li></ul><li><a href="#a:3.">设置完成后效果</a></li></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<a name="a:1."><div class=doc_h1>1. <span>描述</span></div></a><div class=doc_description><span>通用查询较之简单通用查询，增加了表间关联的能力，支持多表查询，但是需要在ECC6以上版本使用，且需要在SAP系统中添加一个我方提供的ABAP Function，并且通用查询相对于简单通用查询来说，设置过程没有简单通用查询那么简单，选择的表和列不再是可视化选择，而完全是通过open sql语句实现。</span></div><a name="a:1.1"><div class=doc_h2>1.1 <span>添加ABAP Function</span></div></a><div class=doc_description><span>我方的ABAP Function的名称为EXTRACT_TABLE_DATA，不可改变，将其添加到SAP系统中，函数内容如下：</span></div><div class=doc_description><span style="position:relative;"><input type="button" class="copy" value="代码复制"> </input></span><span><textarea class="java" name="code">FUNCTION EXTRACT_TABLE_DATA.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  TABLES
+*"      FIELDS STRUCTURE  ZSQL_CLAUSE_ELEMENTS
+*"      FROMCLAUSE STRUCTURE  ZSQL_CLAUSE_ELEMENTS
+*"      WHERECLAUSE STRUCTURE  ZSQL_CLAUSE_ELEMENTS
+*"      DATA STRUCTURE  ZTABLEROWS
+*"----------------------------------------------------------------------
+
+
+*"----------------------------------------------------------------------
+*" Copy selected fields from QUERY_TABLE to DATA_STRUCTURE
+*"----------------------------------------------------------------------
+  TYPE-POOLS: abap.
+  DATA:
+        columnName TYPE SO_TEXT, 
+        fieldDataDescrRef  TYPE REF TO abap_componentdescr, 
+        numberFields TYPE i, 
+        fieldDescr TYPE abap_componentdescr, 
+        fieldname TYPE string, 
+        fieldDescrTab TYPE abap_component_tab,
+        rowStructDescr TYPE REF TO cl_abap_structdescr, 
+        rowReference TYPE REF TO data, 
+        returnRowString TYPE string, 
+        dataFieldString TYPE string, 
+        dataline LIKE data, 
+        fromClauseRow TYPE ZALBUS_STRUCT_WHERECLAUSE,
+        fromClauseString TYPE string,
+        whereClauseRow TYPE ZALBUS_STRUCT_WHERECLAUSE,
+        whereClauseString TYPE string,
+        fieldsRow TYPE ZALBUS_STRUCT_WHERECLAUSE.
+  FIELD-SYMBOLS:
+          <datarow> TYPE ANY, 
+          <datafield> TYPE ANY. 
+
+
+* CREATE DataStructure with field names 
+* Datatypes are read from fieldnames of FIELDS input table
+  DESCRIBE TABLE FIELDS LINES numberFields.
+  LOOP AT FIELDS INTO fieldsRow.
+    fieldname = SY-TABIX.
+* names need to be unique and must start with a char
+    CONCATENATE 'string' fieldname INTO fieldname.
+    CONDENSE fieldname.
+    fieldDescr-name = fieldname.
+* for dictionary lookup we need to change columnnames from Open SQL
+* to dictionary notation
+    columnName = fieldsRow-TEXT.
+    REPLACE FIRST OCCURRENCE OF SUBSTRING '~' IN columnName WITH '-' RESPECTING CASE.
+
+    fieldDescr-type ?= cl_abap_typedescr=>describe_by_name( columnName ).
+    APPEND fieldDescr TO fieldDescrTab.
+  ENDLOOP.
+
+  rowStructDescr = cl_abap_structdescr=>create( fieldDescrTab ).
+
+* now we create the actual data structure in memory
+  create data rowReference type HANDLE rowStructDescr.
+* finally we assign it to the Field-symbol used by the select statement
+  ASSIGN rowReference->* TO <datarow>.
+* End Create DataStructure
+
+* to simplify calls we concatenate from and whereclause into strings
+* this way caller doesn't need to check word wrappings
+  fromClauseString = ''.
+  LOOP AT FROMCLAUSE INTO fromClauseRow.
+    CONCATENATE fromClauseString fromClauseRow-TEXT INTO fromClauseString.
+  ENDLOOP.
+
+  whereClauseString = ''.
+  LOOP AT WHERECLAUSE INTO whereClauseRow.
+    CONCATENATE whereClauseString whereClauseRow-TEXT INTO whereClauseString.
+  ENDLOOP.
+
+* Now start actual select operation
+  SELECT (FIELDS) FROM (fromClauseString) INTO <datarow> WHERE (whereClauseString).
+* we read all fields of the current row, cast it to string and
+* concatenate it into a dataline with division chars.
+    CLEAR: returnRowString.
+    DO numberFields TIMES.
+      ASSIGN component sy-index of structure <datarow> to <datafield>.
+      dataFieldString = <datafield>.
+      CONCATENATE returnRowString '|' datafieldstring INTO returnRowString.
+    ENDDO.
+    dataline = returnRowString.
+* finally dataline is added to the return table.
+    INSERT dataline INTO TABLE data.
+  ENDSELECT.
+
+ENDFUNCTION</textarea></span></div><div class=doc_description><span class="doc_warning">注：sap数据集支持结构型参数。</span></div><a name="a:2."><div class=doc_h1>2. <span>示例</span></div></a><div class=doc_description><span>在Function列表中选择</span><span class="doc_navigation">通用查询（适用于SAP6以上版本）</span><span>，如下图：</span></div><div class=doc_description><img src=2-1.png></img></div><div class=doc_description><span>我们这里简单做个多表查询，比如说关联KNA1和KNVV这两个表，读取出KNA1表中的NAME2和LAND1两个列以及KNVV表中的KUNNR列，并且NAME2不能为空，用参数动态输入LAND1的值，open sql语句和sql语句的格式是有区别的，点击</span><span class="doc_navigation">格式说明</span><span>，可查看open sql的格式。</span></div><a name="a:2.1"><div class=doc_h2>2.1 <span>列设置</span></div></a><div class=doc_description><span>不同于sql语句，open sql中读取某个列应该用</span><span class="doc_sql">表~列</span><span>这种格式，即select后面的文本框语句应该为：</span></div><div class=doc_description><span class="doc_sql">KNA1~NAME2,KNVV~KUNNR,KNA1~LAND1</span><span>。</span></div><a name="a:2.2"><div class=doc_h2>2.2 <span>表设置</span></div></a><div class=doc_description><span>将两张表关联起来，open sql语句中关联表，用</span><span class="doc_sql">inner join on</span><span>格式，即from后面的文本框语句应该为：</span></div><div class=doc_description><span class="doc_sql">KNA1 INNER JOIN KNVV ON KNA1~KUNNR = KNVV~KUNNR</span></div><a name="a:2.3"><div class=doc_h2>2.3 <span>条件设置</span></div></a><div class=doc_description><span>由上面的描述可知，where条件语句中的语句应该为：</span></div><div class=doc_description><span class="doc_sql">KNA1~NAME2 &lt;&gt;'' AND KNA1~LAND1 = '${land}'</span></div><div class=doc_description><span>完整的open sql语句为：</span></div><div class=doc_description><span class="doc_sql">select
+KNA1~NAME2,KNVV~KUNNR,KNA1~LAND1
+from
+KNA1 INNER JOIN KNVV ON KNA1~KUNNR = KNVV~KUNNR
+where
+KNA1~NAME2 &lt;&gt;'' AND KNA1~LAND1 = '${land}'</span></div><div class=doc_description><span>最后结果如下图：</span></div><div class=doc_description><img src=2-2.png></img></div><a name="a:2.4"><div class=doc_h2>2.4 <span>结果查看</span></div></a><div class=doc_description><span>点击预览按钮，可查看上面语句执行的结果，如下图：</span></div><div class=doc_description><img src=2-3.png></img></div><a name="a:3."><div class=doc_h1>3. <span>设置完成后效果</span></div></a><div class=doc_description><span>设置完成后，点击确定，退出SAP数据集对话框，在数据集面板中会增加一个名称为</span><span class="doc_navigation">SAP3</span><span>的数据集，如下图：</span></div><div class=doc_description><img src=2-4.png></img></div><div class=doc_description><span>FR提供了EXTRACT_TABLE_DATA 的源码及后续的数据集使用过程，EXTRACT_TABLE_DATA的创建过程及出现的问题解决进行详细说明</span><span><a href="http://www.finereporthelp.com/help/1/1/2/3.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">通用查询取数中的函数</a></span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

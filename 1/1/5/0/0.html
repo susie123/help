@@ -1,0 +1,273 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>Oracle分页存储过程的实现</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../../../resources/default.css" />
+		<script type="text/javascript" src="../../../../resources/default.js"></script>
+		<script type="text/javascript" src="../../../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../../../folder.html">设计思路</a> >> <a class="alink" href="../../folder.html">数据集</a> >> <a class="alink" href="../folder.html">存储过程</a> >> <a class="alink" href="folder.html">Oracle存储过程相关问题</a> >> <a class="alink" href="0.html">Oracle分页存储过程的实现</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							Oracle分页存储过程的实现
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">描述</a></li><li><a href="#a:2.">具体步骤</a></li><ul><li><a href="#a:2.1">创建包</a></li><li><a href="#a:2.2">分页过程</a></li><li><a href="#a:2.3">存储过程</a></li><li><a href="#a:2.4">测试分页</a></li></ul></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<a name="a:1."><div class=doc_h1>1. <span>描述</span></div></a><div class=doc_description><span>这里以Oracle数据库中的</span><span class="doc_navigation">SCOTT</span><span>用户的</span><span class="doc_navigation">EMP</span><span>表为例，编写一个分页存储过程，要求是：</span></div><div class=doc_description><span>输入表名、每页显示记录数、当前页，返回总记录数、总页数和返回的结果集。</span></div><a name="a:2."><div class=doc_h1>2. <span>具体步骤</span></div></a><a name="a:2.1"><div class=doc_h2>2.1 <span>创建包</span></div></a><div class=doc_description><span>由于需要返回查询出来的结果集，需要在PL/SQL中创建一个</span><span class="doc_navigation">package</span><span>，这个包里面定义一个</span><span class="doc_navigation">refcursor</span><span>类型，用于记录sql语句查询出来的结果集。如下图：</span></div><div class=doc_description><img src=0-1.png></img></div><div class=doc_description><span>创建包的代码如下：</span></div><div class=doc_description><span style="position:relative;"><input type="button" class="copy" value="代码复制"> </input></span><span><textarea class="java" name="code">create or replace package pagingPackage as  
+    type paging_cursor is ref cursor;  
+    end pagingPackage;
+</textarea></span></div><a name="a:2.2"><div class=doc_h2>2.2 <span>分页过程</span></div></a><div class=doc_description><span>接下来开始Oracle的分页过程，我们可以用</span><span class="doc_formula">select emp.*,rownum from emp;</span><span>来显示地表示出每行的行标。然后可以根据行标对内容进行分页，下面这个SQL语句可以作为Oracle分页的模板。</span></div><div class=doc_description><span style="position:relative;"><input type="button" class="copy" value="代码复制"> </input></span><span><textarea class="java" name="code">select * from   
+    (select t1.*,rownum rn from (select * from emp) t1 where rownum<=12)  
+    where rn>=8;  
+</textarea></span></div><a name="a:2.3"><div class=doc_h2>2.3 <span>存储过程</span></div></a><div class=doc_description><span>有了上面的refcursor类型和分页模板，下面开始编写分页的存储过程，如下图：</span></div><div class=doc_description><img src=0-2.png></img></div><div class=doc_description><span>具体代码如下：</span></div><div class=doc_description><span style="position:relative;"><input type="button" class="copy" value="代码复制"> </input></span><span><textarea class="java" name="code">create or replace procedure paging
+    (tableName in varchar2 ,--表名
+    pageSizes in number,--每页显示记录数
+    pageNow in number,--当前页
+    rowNums out number,--总记录数
+    pageNum out number,--总页数
+    paging_cursor out pagingPackage.paging_cursor) is
+    --定义部分
+    --定义sql语句，字符串
+    v_sql varchar2(1000);
+    --定义两个整数，用于表示每页的开始和结束记录数
+    v_begin number:=(pageNow-1)*pageSizes+1;
+    v_end number:=pageNow*pageSizes;
+    begin
+      --执行部分
+      v_sql:='select * from (select t1.*,rownum rn from (select * from '||tableName||') t1 where rownum<='||v_end||') where rn>='||v_begin;
+      --把游标和sql语句关联
+      open paging_cursor for v_sql;
+      --计算rowNums和pageNum
+      --组织一个sql语句
+      v_sql:='select count(*) from '||tableName;
+      --执行该sql语句,并赋给rowNums
+      execute immediate v_sql into rowNums;
+      --计算pageNum
+      if mod(rowNums,pageSizes)=0 then
+        pageNum := rowNums/pageSizes;
+        else
+          pageNum := rowNums/pageSizes+1;
+          end if;
+      end;
+</textarea></span></div><a name="a:2.4"><div class=doc_h2>2.4 <span>测试分页</span></div></a><div class=doc_description><span>点击</span><span class="doc_navigation">模板>模板数据集</span><span>或者直接在数据集面板中，点击+号，添加一个存储过程，切换到oracle数据库所在的数据连接，双击所需要添加的存储过程，如下图：</span></div><div class=doc_description><img src=0-3.png></img></div><div class=doc_description><span>点击预览，需要输入参数，如下图：</span></div><div class=doc_description><img src=0-4.png></img></div><div class=doc_description><span>输入参数后，点击确定，返回三个数据集，如下图：</span></div><div class=doc_description><img src=0-5.png></img></div><div class=doc_description><img src=0-6.png></img></div><div class=doc_description><img src=0-7.png></img></div><div class=doc_description><img src=0-8.png></img></div><div class=doc_description><span>数据集可以同时查看多个结果集，如下图所示：</span></div><div class=doc_description><img src=0-9.png></img></div><div class=doc_description><span class="doc_warning">注：在调用存储过程时，需要设置下pageNow这个参数的默认值，否则不会返回数据集。</span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

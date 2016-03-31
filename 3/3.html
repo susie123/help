@@ -1,0 +1,237 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>参数界面设置</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../resources/default.css" />
+		<script type="text/javascript" src="../resources/default.js"></script>
+		<script type="text/javascript" src="../resources/jquery.js"></script>
+		<script type="text/javascript" src="../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="folder.html">参数入门</a> >> <a class="alink" href="3.html">参数界面设置</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							参数界面设置
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">描述</a></li><li><a href="#a:2.">是否显示参数界面</a></li><li><a href="#a:3.">点击查询前显示报表内容</a></li><li><a href="#a:4.">参数面板背景设置</a></li><li><a href="#a:5.">参数界面显示位置</a></li></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<a name="a:1."><div class=doc_h1>1. <span>描述</span></div></a><div class=doc_description><span>FineReport为了让用户快速的实现参数查询数据功能，提供了专门的参数界面，用来放置与查询相关的控件，并且可以对参数界面进行简单的属性设置。</span></div><div class=doc_description><span>下面我们来一一介绍参数界面的属性设置。</span></div><a name="a:2."><div class=doc_h1>2. <span>是否显示参数界面</span></div></a><div class=doc_description><span>有时用户希望能够自己控制是否显示参数界面，用户可以在参数设计界面设置是否显示参数窗体，也可以再访问报表时，在URL后面添加参数</span><span class="doc_warning">&__pi__=false</span><span>来控制不显示参数面板。</span></div><ul class=doc_bullets><li>参数界面设置</li></ul><div class=doc_description><span>是否显示参数窗体可以通过在参数界面面板中直接设置，如下图，切换至参数面板编辑界面，点击参数界面的空白处，选中参数界面，在右侧的属性表中将</span><span class="doc_navigation">显示参数窗体</span><span>的勾去掉，就不会显示参数界面：</span></div><div class=doc_description><img src=3-1.png></img></div><ul class=doc_bullets><li>通过__pi__参数控制</li></ul><div class=doc_description><span>访问报表时在URL后面加上</span><span class="doc_warning">&__pi__=false</span><span>就可以强制报表不显示参数界面（报表定义了参数界面且设置了显示参数窗体）；</span></div><div class=doc_description><span>例如：</span><span class="doc_dir">http://localhost:8075/WebReport/ReportServer?reportlet=GettingStarted.cpt</span><span class="doc_warning">&__pi__=false</span><span>。</span></div><div class=doc_description><span class="doc_warning">注：pi前后都是两个英文的下划线。</span></div><a name="a:3."><div class=doc_h1>3. <span>点击查询前显示报表内容</span></div></a><div class=doc_description><span class="doc_navigation">点击查询前显示报表内容是指：</span><span>在定义参数的情况下，报表的结果展示不需要用户手动点击查询按钮，而是自动使用参数的默认值进行首次查询并输出结果。</span></div><div class=doc_description><span>实现思路是首先给参数设置默认值，然后打开参数设计界面中勾去“点击查询前不显示报表内容”。</span></div><ul class=doc_bullets><li>设置方法</li></ul><div class=doc_description><span>进入参数面板的编辑状态，在属性面板中勾去“点击查询前不显示报表内容”，设置如下图：</span></div><div class=doc_description><img src=3-2.png></img></div><div class=doc_description><span class="doc_warning">注：设置点击查询前显示报表内容的同时要给参数设置默认值，否则在首次展示时会根据空值进行过滤。</span></div><div class=doc_description><span>保存模板，预览即可以看到，不需要点击查询按钮，首次会根据默认值查询出数据。</span></div><a name="a:4."><div class=doc_h1>4. <span>参数面板背景设置</span></div></a><div class=doc_description><span>参数的默认背景色为灰色，但是为了使参数界面的风格和报表风格相同或达到其他效果，如您的报表背景为白色，希望参数界面背景也显示为白色，要如何设置呢？</span></div><ul class=doc_bullets><li>设置方法</li></ul><div class=doc_description><span>选中参数界面，在属性表中点击</span><span class="doc_navigation">背景</span><span>后面的按钮，修改背景颜色，如下图：</span></div><div class=doc_description><img src=3-3.png></img></div><div class=doc_description><span>其设置效果和</span><span><a href="../6/4/3.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">纸张背景</a></span><span>设置效果相同。</span></div><a name="a:5."><div class=doc_h1>5. <span>参数界面显示位置</span></div></a><div class=doc_description><span>对参数界面除了可以隐藏、设置参数面板背景等操作，还可以设置参数界面的显示位置。</span></div><ul class=doc_bullets><li>设置方法</li></ul><div class=doc_description><span>参数界面的显示位置可以设置为靠左、居中以及靠右显示，具体的设置如下图：</span></div><div class=doc_description><img src=3-4.png></img></div><div class=doc_description><span class="doc_warning">注：参数界面的显示位置以参数界面的宽度，靠左、靠右或者居中，而不是浏览器的页面宽度。</span></div><div class=doc_description><span>设置成居左的效果如下图：</span></div><div class=doc_description><img src=3-5.png></img></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

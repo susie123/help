@@ -1,0 +1,237 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta name="keywords" content="">
+		<title>参数为空选择全部</title>
+		<link id="css" rel="stylesheet" type="text/css" href="../../resources/default.css" />
+		<script type="text/javascript" src="../../resources/default.js"></script>
+		<script type="text/javascript" src="../../resources/jquery.js"></script>
+		<script type="text/javascript" src="../../resources/ZeroClipboard.js"></script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F446ba997c880bc18e23c0fcc5c99ecfb' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<style>
+		.copy{
+		BORDER-TOP:rgb(18, 135, 172) 1px solid;
+		border-bottom:rgb(18, 135, 172) 1px solid;
+		border-left:rgb(18, 135, 172) 1px solid;
+		border-right:rgb(18, 135, 172) 1px solid;
+		background:rgb(225, 234, 245)
+		}</style>
+
+	</head>
+	<body>
+
+
+ 
+
+
+
+		<a name="docname"></a>
+		<div class="docnavi"><a class="alink" href="../folder.html">参数入门</a> >> <a class="alink" href="folder.html">参数设计示例</a> >> <a class="alink" href="6.html">参数为空选择全部</a></div>
+		<div class="doc_body">
+			<table border="0" cellspacing="0">
+				<tr>
+					<td>
+						<h1 align="left">
+							参数为空选择全部
+						</h1>
+					</td>
+				 <td class="ding_td">
+						顶(
+						<span id="countding_title"></span>)
+					</td> 
+				</tr>
+			</table>
+			<table class="time_table" width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						最后更新日期：
+						<span id="lastupdatetime"></span>
+					</td>
+					<td class="dh_tdA" align="left">
+						有
+						<a id="countcomment"
+							onclick="document.location.href='#A';changeTab(1)"></a>人发表评论
+						<a class="selcomment" name="coment"
+							onclick="document.location.href='#A';changeTab(1)">(点击查看)</a>
+					</td>
+				</tr>
+			</table>
+			<ul><li><a href="#a:1.">描述</a></li><li><a href="#a:2.">方法一：通过数据集参数</a></li><ul><li><a href="#a:2.1">实现思路</a></li><li><a href="#a:2.2">示例</a></li></ul><li><a href="#a:3.">方法二：通过报表参数</a></li><ul><li><a href="#a:3.1">实现思路</a></li><li><a href="#a:3.2">示例</a></li></ul></ul>
+			<div class="xuxian_hr"></div>
+			<!-- 这是导航与文档正文的分隔线 -->
+			<div class=doc_key><span>点击报表查询，点击按钮进行条件查询，参数为空选全部，参数为空查询全部值，参数为空选出全部值，参数为空选取全部值，参数条件,参数设计、sql参数</span></div><a name="a:1."><div class=doc_h1>1. <span>描述</span></div></a><div class=doc_description><span>在使用参数进行过滤时，选择某个参数值后就会根据选择的值进行过滤，但是如何实现如下图效果即不输入参数值时能够查询处数据表中的全部值呢？</span></div><div class=doc_description><img src=6-1.png></img></div><div class=doc_description><span>由于参数的定义有两种方式，因此下面我们分别介绍下参数为空选出全部值的做法。</span></div><a name="a:2."><div class=doc_h1>2. <span>方法一：通过数据集参数</span></div></a><a name="a:2.1"><div class=doc_h2>2.1 <span>实现思路</span></div></a><div class=doc_description><span>在定义数据集时，通过使用</span><span><a href="../../13/31/0/4.html#a:2." target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">if函数</a></span><span>判断参数的值是否为空，若为空就不过滤参数，若不为空就进行参数过滤。</span></div><a name="a:2.2"><div class=doc_h2>2.2 <span>示例</span></div></a><ul class=doc_bullets><li>打开模板</li></ul><div class=doc_description><span>打开模板：</span><span class="doc_dir">%FR_HOME%\WebReport\WEB-INF\reportlets\doc\Parameter\DynamicSQL\DynamicSQL.cpt</span><span>。</span></div><ul class=doc_bullets><li>修改数据集</li></ul><div class=doc_description><span>将数据集修改为：</span><span class="doc_sql">SELECT * FROM 订单  where 1=1  ${if(len(area) == 0,"","and 货主地区 = '" + area + "'")} ${if(len(province) == 0,"","and 货主省份 = '" + province + "'")}</span><span>。</span></div><div class=doc_description><span class="doc_warning">注：where 1=1表示条件永真，防止没有之后的参数条件时，where多出而导致出错；len(area)==0表示参数area为空；货主地区='"+area+"'表示取参数值。</span></div><div class=doc_description><span class="doc_warning">${if(len(area) == 0,"","and 货主地区 = '" + area + "'")} 表示若参数area为空就不进行过滤，若不为空则货主地区等于参数值。</span></div><ul class=doc_bullets><li>修改参数界面</li></ul><div class=doc_description><span>将参数界面修改为如下样式：</span></div><div class=doc_description><img src=6-2.png></img></div><ul class=doc_bullets><li>参数控件设置</li></ul><div class=doc_description><span>设置参数area的控件类型为下拉框，数据字典选择数据库表，数据库为FRDemo，数据表为订单，实际值与显示值的列名都选择货主地区。</span></div><div class=doc_description><span>设置参数province的控件类型也为下拉框，数据字典为数据库表，数据库为FRDemo，数据表为订单，实际值与显示值的列名都选择货主省份。</span></div><ul class=doc_bullets><li>效果查看</li></ul><div class=doc_description><span>点击分页预览，不输入参数值后，直接点击查询，效果如上图。在线查看模板效果请点击</span><span><a href="http://www.finereporthelp.com:8889/demo/ReportServer?reportlet=doc\Parameter\ParaNull\ParaNull.cpt" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">ParaNull.cpt</a></span></div><div class=doc_description><span>已完成模板，可参见：</span><span class="doc_dir">%FR_HOME%\WebReport\WEB-INF\reportlets\doc\Parameter\ParaNull\ParaNull.cpt</span></div><a name="a:3."><div class=doc_h1>3. <span>方法二：通过报表参数</span></div></a><a name="a:3.1"><div class=doc_h2>3.1 <span>实现思路</span></div></a><div class=doc_description><span>在给数据列设置过滤条件的时候，同样使用</span><span><a href="../../13/31/0/4.html#a:2." target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">if函数</a></span><span>进行判断。</span></div><a name="a:3.2"><div class=doc_h2>3.2 <span>示例</span></div></a><ul class=doc_bullets><li>打开模板</li></ul><div class=doc_description><span>打开模板：</span><span class="doc_dir">%FR_HOME%\WebReport\WEB-INF\reportlets\doc\Parameter\ParaNull\ParaNull.cpt</span><span>。</span></div><ul class=doc_bullets><li>修改数据集</li></ul><div class=doc_description><span>将数据集修改为查询订单表的数据即：</span><span class="doc_sql">SELECT * FROM 订单</span><span>。</span></div><ul class=doc_bullets><li>报表参数设置</li></ul><div class=doc_description><span>点击</span><span class="doc_navigation">模板>报表参数</span><span>，添加两个</span><span><a href="../../3/6/0.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">报表参数</a></span><span>，分别为area和province。</span></div><ul class=doc_bullets><li>过滤条件设置</li></ul><div class=doc_description><span>点击A2单元格，选择格子上方的</span><span class="doc_navigation">过滤</span><span>按钮，给A2单元格增加如下图所示的过滤条件：</span></div><div class=doc_description><img src=6-3.png></img></div><div class=doc_description><span class="doc_warning">注：nofilter表示不过滤，if(len($area)==0,nofilter,$area)表示参数area为空，就不过滤，若不为空则以参数值进行过滤；if(len($province)==0,nofilter,$province)意义相同。</span></div><ul class=doc_bullets><li>效果查看</li></ul><div class=doc_description><span>点击分页预览，不输入参数值后，直接点击查询效果如上图。</span><span>在线查看模板效果请点击</span><span><a href="http://www.finereporthelp.com:8889/demo/ReportServer?reportlet=doc/Parameter/ParaNull/ParaNull1.cpt" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">ParaNull1.cpt</a></span></div><div class=doc_description><span>已完成模板，可参见：</span><span class="doc_dir">%FR_HOME%\WebReport\WEB-INF\reportlets\doc\Parameter\ParaNull\ParaNull1.cpt</span></div><div class=doc_description><span>参数为空在线视频请查看</span><span><a href="http://bbs.finereport.com/thread-68003-1-1.html" target="_blank" onclick="addTabPage(href,this.innerHTML);return false;">【参数为空】</a></span></div>
+			<table class="dc_table" width="100%">
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="yesinput" onClick="javascript:yes()">
+							<table width="150px" height="18px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sb"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="yes" class="test"></span>
+						</div>
+					</td>
+					<td width="5px">
+						&nbsp
+					</td>
+					<td class="span_td">
+						<div class="abc" id="noinput" onClick="javascript:no()">
+							<table width="150px">
+								<tr>
+									<td>
+										&nbsp
+									</td>
+								</tr>
+							</table>
+							<div class="per">
+								<span id="sa"
+									style="width: 0px; height: 5px; background: #000080; display: block"></span>
+							</div>
+							<span id="no"></span><span id="testno"></span>
+						</div>
+					</td>
+					<td>
+						&nbsp
+						<span id="hidespan">&nbsp</span>
+					</td>
+				</tr>
+			</table>
+			<div class="xuxian_hr"></div>
+			<div class='comment_div'>
+				文明发言，用心评论
+			</div>
+			<table class='newcomment_table'>
+				<tr>
+					<td id="comment_td" rowspan="2">
+						<textarea class="input" name="comment" id="comment_id"></textarea>
+					</td>
+					<td>
+						&nbsp
+					</td>
+					<td class='newcomment_td'>
+						<div class="newcomment_div">
+							应用此篇文章，您:
+						</div>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="yes" onClick="addcomment('不费力')">
+						不费力
+						<br>
+
+						<input type="radio" id="solveproblem" name="solveproblem"
+							checked="checked" value="Medium" onClick="addcomment('研究了一会')">
+						研究了一会
+						<br>
+						<input type="radio" id="solveproblem" name="solveproblem"
+							value="no" onClick="addcomment('琢磨了好久')">
+						琢磨了好久
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td id="commit_td">
+						<div id="commit_id" type="button" name="commit" value=""
+							onclick="dosubmit('comment');" />
+					</td>
+				</tr>
+			</table>
+			<div class='tabnav'>
+
+				<a id='tab1' onclick='changeTab(1)' name="A"></a>
+				<!-- | <a id='tab2' onclick='changeTab(2)' name="B">相关问题</a> -->
+			 </div>
+			<div id='tabid1' class='tabid'>
+				<table id="reportFramed_table">
+					<tr id="sel_tr">
+						<td class="selall" align="right">
+							<a id="ycsall_td" onClick="selmore('aa')">查看全部<span
+								id="countallcomment" class="countallcomment"></span>条>></a>
+						</td>
+						<td class="selall" align="right">
+							<a id="yc_td" style="display: none" onClick="selmore('bb')">
+								&lt;&lt;只显示<span class="countallcomment">5</span>条 </a>
+						</td>
+					</tr>
+					<tr align="left">
+						<td colspan="2" align="left" id="reportFramed">
+							<iframe scrolling="no" frameborder="0" frameborder="no"
+								align="left" id="reportFrame"></iframe> 
+						</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div id='tabid2' class='tabid' style='display: none;'>
+				<table width="90%">
+					<tr>
+						<td align="right">
+							<a width="95%" href="http://bbs.finereport.com/forum.php">去论坛提问</a>
+							<br>
+						</td>
+					</tr>
+				</table>
+
+				<iframe frameBorder="0" align="left" width="98%" height="500px"
+					id="luntaniframe"></iframe>
+			</div>
+			<tr> </tr>
+			<tr> </tr>
+			<tr> </tr>
+		<div class="onlineService" style="display: block;">
+			<div class="ico_sh">
+				<a  id='copytitle' href="javascript:void(0);" onclick="copytitle()" title="" style="width: 37px; overflow: hidden;"></a>
+			</div>
+
+			<div class="ico_pp">
+				<a href="http://bbs.finereport.com/plugin.php?id=hux_zhidao:hux_zhidao" target="_blank" title="问题求助" style="width: 37px; overflow: hidden;"></a>
+			</div>
+			<div class="ico_gt">
+				<a href="javascript:void(0);" title="" style="overflow: hidden; width: 37px;"></a>
+		    </div>
+		</div>			
+
+
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+	summary:"",
+	marginTop:20,
+	showClose:true,
+	shortUrl:false,
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?btn=r.gif&move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="right">
+							CopyRight@2015
+							<br />
+							帆软软件有限公司 苏ICP备14031611号-1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
